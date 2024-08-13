@@ -7,9 +7,9 @@ description: >
 usage:
   version: 2.1
   orbs:
-    ci-tools: janetechinc/ci-tools@0.0.4
+    enforce-commit-checks: ilopezro/enforce-commit-checks@0.1.2
   workflows:
     ci:
       jobs:
-        - ci-tools/check_commits:
-            path_to_enforce: client/libs/dm-sdk
+        - enforce-commit-checks/enforce_single_commit:
+            path_to_enforce: ^client/libs/dm-sdk
