@@ -10,11 +10,7 @@ steps:
         PATH_TO_CHECK: << parameters.path_to_check >>
       name: Echoing things
       command: |
-        echo "Checking commits for $PATH_TO_CHECK"
-  - run:
-      name: Echoing more things
-      command: |
-        echo << parameters.path_to_check >>
+        echo "Checking commits for "${PATH_TO_CHECK}"
   - run:
       environment:
         PATH_TO_CHECK: << parameters.path_to_check >>
