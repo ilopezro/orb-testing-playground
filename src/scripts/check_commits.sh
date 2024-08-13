@@ -32,3 +32,6 @@ for commit in $commits; do
   fi
 done
 # If all commits are clean, exit successfully
+
+echo "All commits are clean. Exiting successfully."
+exit 0
