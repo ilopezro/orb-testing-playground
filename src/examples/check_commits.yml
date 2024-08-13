@@ -1,0 +1,15 @@
+description: >
+  Implement this job on the same level as you would a commitlint job for example. The sooner
+  you run this command, the quicker feedback you'll get.
+# Provide a use-case based example for using this orb.
+# Everything in the `usage` section will be displayed in the orb registry.
+# Comments are not retained.
+usage:
+  version: 2.1
+  orbs:
+    ci-tools: janetechinc/ci-tools@0.0.4
+  workflows:
+    ci:
+      jobs:
+        - ci-tools/check_commits:
+            path_to_enforce: client/libs/dm-sdk
