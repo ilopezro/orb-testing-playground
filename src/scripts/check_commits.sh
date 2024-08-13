@@ -28,9 +28,9 @@ for commit in $commits; do
     continue
   fi
 
-  files=$(echo "$changed_files" | grep "${PATH_TO_CHECK}")
+  files=$(echo "$changed_files" | grep -F "${PATH_TO_CHECK}")
   echo "calculated files $files"
-  other_files=$(echo "$changed_files" | grep -v "${PATH_TO_CHECK}")
+  other_files=$(echo "$changed_files" | grep -v -F "${PATH_TO_CHECK}")
   echo "calculated other files $other_files"
 
   if [[ -n $files ]]; then
