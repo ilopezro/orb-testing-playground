@@ -1,0 +1,12 @@
+description: Checks each individual commit to ensure cleanliness for specified path
+parameters:
+  path_to_check:
+    description: The path to check commits for.
+    default: '.'
+    type: string
+steps:
+  - run:
+      environment:
+        PATH_TO_CHECK: << parameters.path_to_check >>
+      name: Check Commits
+      command: <<include(scripts/check_commits.sh)>>

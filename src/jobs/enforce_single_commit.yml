@@ -1,0 +1,13 @@
+description: Enforces a single commit for the specified path(s).
+parameters:
+  path_to_enforce:
+    description: The path to enforce a single commit for.
+    default: '.'
+    type: string
+resource_class: small
+docker:
+  - image: cimg/base:stable
+steps:
+  - checkout
+  - check_commits:
+      path_to_check: << parameters.path_to_enforce >>
