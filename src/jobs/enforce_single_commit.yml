@@ -1,6 +1,6 @@
 description: Enforces a single commit for the specified path(s).
 parameters:
-  path_to_enforce:
+  path_to_check:
     description: The path to enforce a single commit for.
     default: '.'
     type: string
@@ -10,4 +10,4 @@ docker:
 steps:
   - checkout
   - check_commits:
-      path_to_check: << parameters.path_to_enforce >>
+      path_to_check: << parameters.path_to_check >>
