@@ -16,17 +16,22 @@ echo "Checking commits in branch $current_branch..."
 commits=$(git rev-list master..HEAD)
 
 echo "Beginning to check commits..."
+echo "Commits to check: $commits"
 
 for commit in $commits; do
   echo "Checking commit $commit..."
 
   changed_files=$(git diff-tree --no-commit-id --name-only -r "$commit")
-  echo "calcuted changed files"
+  echo "Changed files: $changed_files"
+
+  if [[ -z "$changed_files" ]]; then
+    continue
+  fi
 
   files=$(echo "$changed_files" | grep "${PATH_TO_CHECK}")
-  echo "calculated files"
+  echo "calculated files $files"
   other_files=$(echo "$changed_files" | grep -v "${PATH_TO_CHECK}")
-  echo "calculated other files"
+  echo "calculated other files $other_files"
 
   if [[ -n $files ]]; then
     echo "Restricted directory files found in commit $commit."
