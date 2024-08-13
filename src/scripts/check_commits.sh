@@ -13,18 +13,29 @@ fi
 
 echo "Checking commits in branch $current_branch..."
 
-# Get the list of commits that are in the current branch but not in master
 commits=$(git rev-list master..HEAD)
 
-# Iterate over each commit and check for "cleanliness"
+echo "Beginning to check commits..."
+
 for commit in $commits; do
-  # Get the list of files changed in this commit
+  echo "Checking commit $commit..."
+
   changed_files=$(git diff-tree --no-commit-id --name-only -r "$commit")
-  # Check if any files from the directory are in this commit
+  echo "calcuted changed files"
+
   files=$(echo "$changed_files" | grep "${PATH_TO_CHECK}")
-  # Check if there are other files in this commit
+  echo "calculated files"
   other_files=$(echo "$changed_files" | grep -v "${PATH_TO_CHECK}")
-  # If both files and other_files are not empty, fail the build
+  echo "calculated other files"
+
+  if [[ -n $files ]]; then
+    echo "Restricted directory files found in commit $commit."
+  fi
+
+  if [[ -n $other_files ]]; then
+    echo "Other files found in commit $commit."
+  fi
+
   if [[ -n "$files" && -n "$other_files" ]]; then
     echo "Error: Commit $commit is not clean."
     echo "Restricted directory files found batched together with other files. Please separate them into different commits."
