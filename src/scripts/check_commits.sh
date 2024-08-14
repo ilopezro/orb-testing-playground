@@ -25,11 +25,11 @@ for commit in $commits; do
   fi
 
   # Match files in the specific path using ERE
-  files=$(echo "$changed_files" | grep -E "${PATH_TO_CHECK}")
+  files=$(echo "$changed_files" | grep -E "${PATH_TO_CHECK}" || true)
   echo "Matched restricted files: $files"
 
   # Match files that are not in the specific path using ERE
-  other_files=$(echo "$changed_files" | grep -v -E "${PATH_TO_CHECK}")
+  other_files=$(echo "$changed_files" | grep -v -E "${PATH_TO_CHECK}" || true)
   echo "Matched other files: $other_files"
 
   if [[ -n "$files" && -n "$other_files" ]]; then
