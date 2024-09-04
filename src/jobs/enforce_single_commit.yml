@@ -4,6 +4,10 @@ parameters:
     description: The path to enforce a single commit for.
     default: '.'
     type: string
+  working_directory:
+    description: The working directory to run the command in.
+    default: '~/repo'
+    type: string
 resource_class: small
 docker:
   - image: cimg/base:stable
@@ -12,3 +16,4 @@ steps:
       at: ~/
   - check_commits:
       path_to_enforce: << parameters.path_to_enforce >>
+      working_directory: << parameters.working_directory >>
