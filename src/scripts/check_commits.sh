@@ -9,6 +9,9 @@ if [[ "$CIRCLE_BRANCH" == "merging" ]]; then
   exit 0
 fi
 
+echo "Navigating to the working directory: $WORKING_DIRECTORY"
+cd "$CIRCLE_WORKING_DIRECTORY"
+
 default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
 
 echo "Checking commits in branch $CIRCLE_BRANCH..."

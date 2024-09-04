@@ -4,15 +4,20 @@ parameters:
     description: The path to check commits for.
     default: '.'
     type: string
+  working_directory:
+    description: The working directory to run the command in.
+    default: '~/repo'
+    type: string
 steps:
   - run:
       environment:
-        PATH_TO_ENFORCE: << parameters.path_to_enforce >>
+        WORKING_DIRECTORY: << parameters.working_directory >>
       name: Echoing things
       command: |
-        echo "Checking commits for '${PATH_TO_ENFORCE}'"
+        echo "Checking '${WORKING_DIRECTORY}' directory"
   - run:
       environment:
         PATH_TO_ENFORCE: << parameters.path_to_enforce >>
+        WORKING_DIRECTORY: << parameters.working_directory >>
       name: Check Commits
       command: <<include(scripts/check_commits.sh)>>
