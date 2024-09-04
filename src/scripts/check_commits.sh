@@ -10,7 +10,7 @@ if [[ "$CIRCLE_BRANCH" == "merging" ]]; then
 fi
 
 echo "Navigating to the working directory: $WORKING_DIRECTORY"
-cd "$CIRCLE_WORKING_DIRECTORY"
+cd "$WORKING_DIRECTORY"
 
 default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
 
