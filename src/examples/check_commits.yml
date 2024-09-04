@@ -12,4 +12,4 @@ usage:
     ci:
       jobs:
         - enforce-commit-checks/enforce_single_commit:
-            path_to_check: ^client/libs/dm-sdk
+            path_to_enforce: ^client/libs/dm-sdk

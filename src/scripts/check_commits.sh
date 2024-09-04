@@ -1,41 +1,44 @@
 #!/bin/bash
 set -eo pipefail
 
-echo "Enforcing separate commits in the directory: $PATH_TO_CHECK"
+echo -e "Enforcing separate commits in the directory: $PATH_TO_ENFORCE\n"
 
 # Get the current branch name
-current_branch=$(git rev-parse --abbrev-ref HEAD)
-if [[ "$current_branch" == "merging" ]]; then
+if [[ "$CIRCLE_BRANCH" == "merging" ]]; then
   echo "We are borsing. Fast-passing the check."
   exit 0
 fi
 
-echo "Checking commits in branch $current_branch..."
+default_branch=$(git symbolic-ref refs/remotes/origin/HEAD | sed 's@^refs/remotes/origin/@@')
 
-commits=$(git rev-list master..HEAD)
-echo "Commits to check: $commits"
+echo "Checking commits in branch $CIRCLE_BRANCH..."
+echo -e "Checking commits against $default_branch...\n"
+
+commits=$(git rev-list "$default_branch"..HEAD)
 
 for commit in $commits; do
-  echo "Checking commit $commit..."
+  short_commit=$(echo "$commit" | cut -c 1-8)
+  echo "Checking commit $short_commit..."
   changed_files=$(git diff-tree --no-commit-id --name-only -r "$commit")
-  echo "Changed files: $changed_files"
 
-  if [[ -z "$changed_files" ]]; then
-    continue
-  fi
+  # Matching files in the restricted directory
+  files=$(echo "$changed_files" | grep -E "${PATH_TO_ENFORCE}" || true)
 
-  # Match files in the specific path using ERE
-  files=$(echo "$changed_files" | grep -E "${PATH_TO_CHECK}" || true)
-  echo "Matched restricted files: $files"
+  # Matching files outside the restricted directory
+  other_files=$(echo "$changed_files" | grep -v -E "${PATH_TO_ENFORCE}" || true)
 
-  # Match files that are not in the specific path using ERE
-  other_files=$(echo "$changed_files" | grep -v -E "${PATH_TO_CHECK}" || true)
-  echo "Matched other files: $other_files"
-
+  # If both files and other_files are not empty, then the commit is not clean
   if [[ -n "$files" && -n "$other_files" ]]; then
-    echo "Error: Commit $commit is not clean."
+    echo "Error: Commit $short_commit is not clean."
+    echo -e "Restricted directory files found batched together with other files. Please separate them into different commits.\n"
+
+    echo "Split the following files into their own commit:"
+    for file in $files; do
+      echo "  - $file"
+    done
     exit 1
   fi
+  echo -e "Commit is clean. Continuing.\n"
 done
 
 echo "All commits are clean. Exiting successfully."
