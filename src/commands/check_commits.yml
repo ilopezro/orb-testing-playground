@@ -1,18 +1,18 @@
 description: Checks each individual commit to ensure cleanliness for specified path
 parameters:
-  path_to_check:
+  path_to_enforce:
     description: The path to check commits for.
     default: '.'
     type: string
 steps:
   - run:
       environment:
-        PATH_TO_CHECK: << parameters.path_to_check >>
+        PATH_TO_ENFORCE: << parameters.path_to_enforce >>
       name: Echoing things
       command: |
-        echo "Checking commits for '${PATH_TO_CHECK}'"
+        echo "Checking commits for '${PATH_TO_ENFORCE}'"
   - run:
       environment:
-        PATH_TO_CHECK: << parameters.path_to_check >>
+        PATH_TO_ENFORCE: << parameters.path_to_enforce >>
       name: Check Commits
       command: <<include(scripts/check_commits.sh)>>
